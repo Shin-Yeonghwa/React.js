@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
-import './Login.css';
+import React from 'react';
 
-class Login extends Component {
-  render() {
-    return (
-      // JSX 문법으로 변환 적용해주세요.
-      <div></div>
-    );
-  }
-}
+const App = () => (
+    <div>
+        <h2>함수형</h2>
+        <p>ES6 Type 문법(화살표 함수)</p>
+    </div>
+);
 
-export default Login;
+export default App;

@@ -2,16 +2,23 @@ import React from 'react';
 
 class AppChild extends React.Component {
     render() {
-        // #3 DEMO_PROPS 대신 this.props로 부모 컴포넌트가 전달하는 값을 직접 사용
-        const { id, title } = this.props;
+        // this.props는 부모 컴포넌트가 전달하는 값
+        const { title } = this.props;
+        const { parentsClassName } = this.props;
 
         return (
-            <li>
-                <p>{id}</p>
-                <p>{title}</p>
-            </li>
+            // 클래스 적용
+            <div>
+                <p className={parentsClassName}>{title}</p>
+            </div>
         );
-    };
+    }
 }
+
+// title props에 대한 기본 값 설정
+AppChild.defaultProps = {
+    title: '제목이 없습니다.',
+    parentsClassName: 'off'
+};
 
 export default AppChild;

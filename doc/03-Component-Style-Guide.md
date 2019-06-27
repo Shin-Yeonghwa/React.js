@@ -56,7 +56,6 @@
     - ES5 문법 예시
 
     ```js
-    // ex_code_1
     import React from 'react';
 
     const App = function () {
@@ -74,7 +73,6 @@
     - ES6 문법 예시 (화살표 함수/구조 간소화)
 
     ```js
-    // ex_code_2
     import React from 'react';
 
     const App = () => (
@@ -87,11 +85,19 @@
     export default App;
     ```
 
+    > `let`, `const`는 ES5의 `var`와 같이 변수 선언을 위해 ES6에 추가된 키워드입니다. 안정성 측면에서 var 보다 `let`과 `const`를 선호합니다.
+    >- `let`
+        - 재할당 가능
+        - 재선언 불가
+    >- `const`
+        - 재할당 불가
+        - 제산안 불가 
+        - 재할당이 필요한 경우를 제외하고 `const` 사용 권장
+
 - #### 클래스형
     - 동적 랜더링이 필요한 컴포넌트를 만들 때 사용합니다.
 
     ```js
-    // ex_code_3
     import React from 'react';
 
     class App extends React.Component {
@@ -104,74 +110,7 @@
 
     export default App;
     ```
-    - 필요한 데이터는 `DEMO_PROPS`에 임시로 정의합니다.
-
-    ```js
-    // ex_code_4
-    import React from 'react';
-
-        // 동적 처리에 필요한 데이터
-        const DEMO_PROPS = {
-            title: '동적 처리에 필요한 데이터'
-        };
-
-        class App extends React.Component {
-            render() {
-                // 임시 데이터를 변수에 할당
-                const { title} = DEMO_PROPS;
-
-                // 임시 데이터 적용
-                return (
-                    <h2>{title}</h2>
-                );
-            }
-        }
-
-    export default App;
-    ```
-
-
-- 컴포넌트 내부에 선언하는 서브 컴포넌트는 동적인 랜더링 여부와 상관 없이 함수형으로 사용합니다.
-
-    ```js
-    //ex_code_5
-    import React from 'react';
-
-    const DEMO_PROPS = {
-        title: '클래스형 예제'
-    };
-
-    // 서브 컴포넌트의 DEMO_PROPS
-    const DEMO_PROPS_SUB_COMPONENT2 = {
-        title: '서브 컴포넌트 2'
-    };
-
-    // DEMO_PROPS 를 사용하지 않는 서브 컴포넌트
-    const SubComponent1 = () => <p>서브 컴포넌트 1</p>;
-
-    // DEMO_PROPS 를 사용하는 서브 컴포넌트
-    const SubComponent2 = () => {
-        const { title } = DEMO_PROPS_SUB_COMPONENT2;
-
-        return <p>{ title }</p>
-    };
-
-    class App extends React.Component {
-        render() {
-            const { title } = DEMO_PROPS;
-
-            return (
-                <div>
-                    <SubComponent1 />
-                    <SubComponent2 />
-                </div>
-            );
-        }
-    }
-
-    export default App;
-    ```
-
+    >`class` 객체를 생성하고 상속을 다루기 위한 문법입니다. 클래스 상속은 `extends`를 통해 상속합니다.
 
 ## 상태 값
 
@@ -180,17 +119,17 @@
 > 상태 값이란 쉽게 말해서 렌더링에 영향을 주는 데이터라고 할 수 있습니다. 일반적으로 컴포넌트 외부에서 접근할 수 없는 상태 값은 `state`로 관리하고, 외부에서 제어하는 상태 값은 `props`로 관리합니다. 마크업 개발 단계에서는 비즈니스 로직을 예상할 수 없기 때문에 이 둘을 구분하지 않습니다.
 
 
-### 컴포넌트를 신규로 만드는 경우
+### 상태 값 대응하기
 
 - 컴포넌트에서 상태 값이 필요한 경우 `import` 구문 바로 아래에 `DEMO_PROPS`를 추가하여 데이터를 관리합니다.
 
     ```js
-    //ex_code_6
+    //exCode1
     import React from 'react';
 
     // #1 마크업 개발용 데이터 정의
     const DEMO_PROPS = {
-        id: '신규 컴퍼넌트 상태값 적용하기',
+        id: '상태값 적용하기',
         title: 'import 구문 바로 아래에 DEMO_PROPS를 추가하여 데이터를 관리합니다.'
     };
 
@@ -210,43 +149,30 @@
     }
 
     export default App;
-
     ```
 
-### 개발된 컴포넌트를 수정하는 경우
+### 개발된 컴포넌트의 상태값 대응 하기
 
-- 개발된 컴포넌트에서 `state`나 `props`에 필요한 값이 없는 경우, 해당 값만 `DEMO_PROPS`로 추가하여 사용합니다.
+- 개발된 컴포넌트에 기존 대응한 `DEMO_PROPS`가 없는 경우는 `state`나 `props`로 개발 적용이 완료된 상태로 필요한 값만 `DEMO_PROPS`로 추가하여 사용합니다.
 
     ```js
     import React from 'react';
 
-    class App extends React.Component<Props> {
-        render() {
-            const { id, title } = this.props;
+    /* #1 개발 대응으로 해당 값은 삭제되어 전달 됨
+    const DEMO_PROPS = {
+        id: '상태값 적용하기',
+        title: 'import 구문 바로 아래에 DEMO_PROPS를 추가하여 데이터를 관리합니다.'
+    };
+    */
 
-            return (
-                <div>
-                    <p>{id}</p>
-                    <p>{title}</p>
-                </div>
-            );
-        }
-    }
-
-    export default App;
-    ```
-
-    ```js
-    import React from 'react';
-
-    // #1 마크업 개발용 데이터 추가
+    // #2 필요한 마크업 개발용 데이터 추가
     const DEMO_PROPS = {
         preview: '미리 보기 내용'
     };
 
     class App extends React.Component<Props> {
         render() {
-            // #2 기존의 props의 위치와 상관 없이 첫 번째 라인에 별도로 추가
+            // #3 기존의 props의 위치와 상관 없이 첫 번째 라인에 별도로 추가
             const { preview } = DEMO_PROPS;
 
             const { id, title } = this.props;
@@ -256,7 +182,7 @@
                     <p>{id}</p>
                     <p>{title}</p>
 
-                    {/* #3 추가 데이터 반영 */}
+                    {/* #4 추가 데이터 반영 */}
                     <p>{preview}</p>
                 </div>
             );
@@ -271,7 +197,7 @@
 - `DEMO_PROPS`외에 `DEMO_PROPS_SUB_COMPONENT` 형태로 별도 추가하여 관리합니다.
 
     ```js
-    //ex_code_7
+    //exCode2
     import React from 'react';
 
     const DEMO_PROPS = {
@@ -281,14 +207,14 @@
 
     // #1 서브 컴포넌트 개발용 데이터 정의
     const DEMO_PROPS_BADGE = {
-        type: 'admin'
+        sub_title: '서브 컴포넌트 개발용 데이터'
     };
 
     const Badge = () => {
         // #2 서브 컴포넌트의 props를 변수에 할당
-        const { type } = DEMO_PROPS_BADGE;
+        const { sub_title } = DEMO_PROPS_BADGE;
 
-        return type === 'admin' && <p>Badge admin</p>
+        return <p>{sub_title}</p>
     };
 
     class App extends React.Component {
@@ -322,20 +248,21 @@
 
     // #1 자식 컴포넌트와 공유할 category 값을 부모 컴포넌트에서 정의
     const DEMO_PROPS = {
-        category: 'food',
-        title: '자식 컴포넌트 상태 값 전달'
+        title: '자식 컴포넌트 상태 값 전달',
+        parentsClassName: 'parents',
+        childClassName: 'child'
     };
 
     class App extends React.Component {
         render() {
-            const { title, category } = DEMO_PROPS;
+            const { title, parentsClassName, childClassName } = DEMO_PROPS;
 
             return (
                 <div>
-                    <h2>{title}</h2>
+                    <h2 className={parentsClassName}>{title}</h2>
 
                     {/* #2 자식 컴포넌트의 props로 category 상태 값 전달 */}
-                    <AppChild category={category} />
+                    <AppChild childClassName={childClassName} />
                 </div>
             );
         }
@@ -357,15 +284,12 @@
         render() {
             const { contents } = DEMO_PROPS;
 
-            // #3 부모에서 전달하는 category 값은 DEMO_PROPS 가 아닌 this.props 를 통해서 사용
-            const { category } = this.props;
-
-            // 카테고리명-wrap 으로 클래스 가공
-            const wrapClass = `${category}-wrap`;
+            // #3 부모에서 전달하는 childClassName 값은 DEMO_PROPS 가 아닌 this.props 를 통해서 사용
+            const { childClassName } = this.props;
 
             return (
                 // 클래스 적용
-                <div className={wrapClass}>
+                <div className={childClassName}>
                     <p>{contents}</p>
                 </div>
             );
@@ -373,28 +297,28 @@
     }
 
     export default AppChild;
+
     ```
 
 - 컴포넌트 내에 있는 서브 컴포넌트에 `props`를 전달하는 경우는 파라미터로 받아서 처리합니다.
 
     ```js
-    // ex_code_9
     import React from 'react';
 
     // #1 자식 컴포넌트와 공유할 category 값을 부모 컴포넌트에서 정의
     const DEMO_PROPS = {
-        category: 'food',
+        className: 'name',
         title: '컨퍼넌트 IN 컴퍼넌트 props 전달',
         content: '파라미터로 받아서 처리'
     };
 
     // #2 서브 컴포넌트(함수형)의 파라미터에 props를 추가하고 변수에 할당
     const SubComponent = (props) => {
-        const { category, content } = props;
+        const { className, content } = props;
 
         // #3 props 적용
         return (
-            <div className={category}>
+            <div className={className}>
                 <p>{content}</p>
             </div>
         );
@@ -402,7 +326,7 @@
 
     class App extends React.Component {
         render() {
-            const { category, title, content } = DEMO_PROPS;
+            const { className, title, content } = DEMO_PROPS;
 
             return (
                 <div>
@@ -410,7 +334,7 @@
 
                     {/* #4 서브 컴포넌트에 props 전달 */}
                     <SubComponent
-                        category={category}
+                        className={className}
                         content={content}
                     />
                 </div>
@@ -425,10 +349,7 @@
 - `props`를 활용하게 되면 해당 컴포넌트를 사용할 때 항상 부모 컴포넌트에서 해당 값을 전달해야 합니다. 이 경우 `defaultProps`를 이용하면 값을 전달하지 않았을 때 사용할 값을 지정할 수 있습니다.
     > `defaultProps`의 설정 방법은 프로젝트의 react 세팅에 따라 여러가지 방법이 존재합니다.
 
-    #### 일반적인 환경
-
     ```js
-    //ex_code_10
     import React from 'react';
 
     class AppChild extends React.Component {
@@ -455,83 +376,98 @@
 
 ## 동적 랜더링
 
-조건에 따라 템플릿을 처리하는 방법을 안내합니다.
+중첩 클래스 및 컴포넌트 노출 제어 등 조건에 따라 템플릿을 처리하는 방법을 안내합니다.
+해당 처리는 `DEMO_PROPS`를 이용한 스크립트 조건 처리가 필요합니다.
 
 
-### CSS 클래스 조건 처리
+### className 클래스 조건 처리
 
 - 조건에 따른 클래스 처리는 항상 [classnames](https://www.npmjs.com/package/classnames) 라이브러리를 사용하고 별도의 변수로 처리합니다.
 
-    #### 기본 처리
+> `classnames`는 중첩 클래스의 복잡한 선언을 쉽게 적용할 수 있도록 도와주는 module로 아래와 같이 적용이 가능합니다.
 
-    ```js
-    //ex_code_12
-    import React from 'react';
-    import classnames from 'classnames';
+```js
+//classnames 사용 전
+<div className={[style.box, style.blue].join('')}>
+// classnames 적용 후
+<div className={classNames(style.box, styles.blue)>
+// classnames blind 적용 후(const cx = className.blind(styles);)
+<div className={cx('box', 'blue')>
+```
 
-    const DEMO_PROPS = {
-        isLogin: true
-    };
+#### 기본 처리
 
-    class App extends React.Component {
-        render() {
-            const { isLogin } = DEMO_PROPS;
+```js
+import React from 'react';
+import classnames from 'classnames';
 
-            const expandClass = classnames({
-                // 로그인 상태가 아닌 경우 expand 클래스 노출
-                'expand': !isLogin
-            });
+const DEMO_PROPS = {
+    isLogin: true
+};
 
-            return (
-                // 로그인을 안한 상태면 expand 클래스 추가
-                <div className={expandClass}>
-                    <h2>CSS 클래스 조건 처리</h2>
-                </div>
-            );
-        }
+class App extends React.Component {
+    render() {
+        const { isLogin } = DEMO_PROPS;
+
+        const expandClass = classnames({
+            // 로그인 상태가 아닌 경우 expand 클래스 노출
+            'expand': !isLogin
+        });
+
+        return (
+            // 로그인을 안한 상태면 expand 클래스 추가
+            <div className={expandClass}>
+                <h2>CSS 클래스 조건 처리</h2>
+            </div>
+        );
     }
+}
 
-    export default App;
-    ```
+export default App;
+```
+> ! 논리 연산자 : ! 변수가 false이면 최종 결과가 true
 
-    #### 복잡한 조건 처리
+#### 복잡한 조건 처리
 
-    ```js
-    //ex_code_13
-    import React from 'react';
-    import classnames from 'classnames';
+```js
+//ex_code_13
+import React from 'react';
+import classnames from 'classnames';
 
-    const DEMO_PROPS = {
-        isLogin: false,
-        userType: 'admin'
-    };
+const DEMO_PROPS = {
+    isLogin: false,
+    userType: 'admin'
+};
 
-    class App extends React.Component {
-        render() {
-            const { isLogin, userType } = DEMO_PROPS;
+class App extends React.Component {
+    render() {
+        const { isLogin, userType } = DEMO_PROPS;
 
-            const expandClass = classnames({
-                'expand': !isLogin, // 로그인이 아닌 경우라면 expand 클래스 노출
-                'info-wrap': userType !== 'admin' // admin이 아니면 info-wrap 클래스 노출
-            });
+        const expandClass = classnames({
+            'expand': !isLogin, // 로그인이 아닌 경우라면 expand 클래스 노출
+            'info-wrap': userType !== 'admin' // admin이 아니면 info-wrap 클래스 노출
+        });
 
-            const loginClass = classnames({
-                'login': isLogin, // 로그인이면 login 클래스 노출
-                'user-admin': userType === 'admin', // admin이면 user-admin 클래스 노출
-                'user-staff': userType !== 'admin' // admin이 아니면 user-staff 클래스 노출
-            });
+        const loginClass = classnames({
+            'login': isLogin, // 로그인이면 login 클래스 노출
+            'user-admin': userType === 'admin', // admin이면 user-admin 클래스 노출
+            'user-staff': userType !== 'admin' // admin이 아니면 user-staff 클래스 노출
+        });
 
-            return (
-                // 조건 처리된 클래스 적용
-                <div className={expandClass}>
-                    <h2 className={loginClass}>CSS 복잡한 조건 처리</h2>
-                </div>
-            );
-        }
+        return (
+            // 조건 처리된 클래스 적용
+            <div className={expandClass}>
+                <h2 className={loginClass}>CSS 복잡한 조건 처리</h2>
+            </div>
+        );
     }
+}
 
-    export default App;
-    ```
+export default App;
+```
+
+> === 비교 연산자 : 좌/우의 값이 같으면 true
+!== 비교 연산자 : 좌/우의 값이 다르면 true
 
 - 조건과 상관 없는 고정 클래스가 있는 경우는 `classsnames`의 첫 번째 파라미터로 전달합니다.
 
@@ -571,64 +507,66 @@
 
 - 조건 따른 컴포넌트를 노출: `&&` 연산자
 
-    #### 컴포넌트 조건부 랜더링
+#### 컴포넌트 조건부 랜더링
 
-    ```js
-    //ex_code_15
-    import React from 'react';
+```js
+//ex_code_15
+import React from 'react';
 
-    const DEMO_PROPS = {
-        isLogin: true
-    };
+const DEMO_PROPS = {
+    isLogin: true
+};
 
-    class App extends React.Component {
-        render() {
-            const { isLogin } = DEMO_PROPS;
+class App extends React.Component {
+    render() {
+        const { isLogin } = DEMO_PROPS;
 
-            // 로그인 상태에서만 컴포넌트 노출
-            return isLogin && (
-                <div>
-                    <h2>컴포넌트 조건부 랜더링</h2>
-                </div>
-            );
-        }
+        // 로그인 상태에서만 컴포넌트 노출
+        return isLogin && (
+            <div>
+                <h2>컴포넌트 조건부 랜더링</h2>
+            </div>
+        );
     }
+}
 
-    export default App;
+export default App;
 
-    ```
+```
 
-    #### 특정 영역 조건부 랜더링
+> && 논리 연산자 : a와 b 모두 true일때 최종 결과가 true
 
-    ```js
-    //ex_code_16
-    import React from 'react';
+#### 특정 영역 조건부 랜더링
 
-    const DEMO_PROPS = {
-        isLogin: true
-    };
+```js
+//ex_code_16
+import React from 'react';
 
-    class App extends React.Component {
-        render() {
-            const { isLogin } = DEMO_PROPS;
+const DEMO_PROPS = {
+    isLogin: true
+};
 
-            return (
-                <div>
-                    <h2>특정 영역 조건부 랜더링</h2>
-                    {/* 로그인 상태에서만 표시 */}
-                    {isLogin && (
-                        <p>
-                            로그인 상태에서만 노출
-                        </p>
-                    )}
-                </div>
-            );
-        }
+class App extends React.Component {
+    render() {
+        const { isLogin } = DEMO_PROPS;
+
+        return (
+            <div>
+                <h2>특정 영역 조건부 랜더링</h2>
+                {/* 로그인 상태에서만 표시 */}
+                {isLogin && (
+                    <p>
+                        로그인 상태에서만 노출
+                    </p>
+                )}
+            </div>
+        );
     }
+}
 
-    export default App;
+export default App;
 
-    ```
+```
 
 - 조건 따른 컴포넌트를 노출: 삼항연산자
 
